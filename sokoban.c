@@ -539,7 +539,10 @@ void display_how(int body) {
 
 void display_game_stats() {
 	write_text("SOKOBAN", 37, 15, ICE_BLUE, 1);
-	// sprintf here
+	
+	// char str[10];
+	// sprintf(str, "%d", moves);
+	// write_text(str, x, y, WHITE, 0);
 
 	// controls
 	draw_box(SPACE, 61, 73);
