@@ -333,7 +333,9 @@ void start_game(){
         // while level is not completed, user can enter a move, reset the game, or go back to the main menu 
         while(level_status == ONGOING){
             printf("LEVEL %d\n", level_number + 1);
+            display_level(level_number + 1);
             printf("Moves: %d\n", moveCount);
+            display_moves(moveCount);
             printf(">> ");
             char user_input = getch();
             switch(user_input){
@@ -548,6 +550,29 @@ void display_how(int body) {
 		write_text("The puzzle is solved when all", 28, 105, WHITE, 0);
 		write_text("boxes are at storage locations.", 22, 120, WHITE, 0);
 	}	
+}
+
+void display_level(int level){
+    
+    // set_graphics(VGA_320X200X256);
+    draw_box(99, 80, 50);
+    clrscr();
+    char str[10];
+    sprintf(str, "%d", level);
+    write_text("Level: ", 20, 40, WHITE, 0);
+    write_text(str, 80, 40, WHITE, 0);
+}
+
+void display_moves(int moveCount){
+
+    // set_graphics(VGA_320X200X256);
+    draw_box(99, 80, 50);
+    draw_box(99, 98, 50);
+    clrscr();
+    char str[10];
+    sprintf(str, "%d", moveCount);
+    write_text("Moves: ", 20, 50, WHITE, 0);
+    write_text(str, 80, 50, WHITE, 0);
 }
 
 void display_game_stats() {
