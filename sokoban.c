@@ -51,6 +51,7 @@ void display_about();   			// this is to display the about page
 void display_how(int body);			// this is to display the how page
 void congratulate();				// this is to display end game screen
 void display_board(int level);   	// displays board given the level
+void display_game_stats();			// displays simple how, level and moves
 
 // -- misc pages
 // about
@@ -326,6 +327,7 @@ void start_game(){
         int **level_board = create_board();
         copy_board(levels[level_number], level_board);
     	display_board(level_number);
+		display_game_stats();
         get_player_position(&row_player, &col_player, level_board);
         // while level is not completed, user can enter a move, reset the game, or go back to the main menu 
         while(level_status == ONGOING){
@@ -533,6 +535,23 @@ void display_how(int body) {
 		write_text("The puzzle is solved when all", 28, 105, WHITE, 0);
 		write_text("boxes are at storage locations.", 22, 120, WHITE, 0);
 	}	
+}
+
+void display_game_stats() {
+	write_text("SOKOBAN", 37, 15, ICE_BLUE, 1);
+	// sprintf here
+
+	// controls
+	draw_box(SPACE, 61, 73);
+	draw_box(SPACE, 43, 91);
+	draw_box(SPACE, 79, 91);
+	draw_box(SPACE, 61, 109);
+
+	// game
+	draw_box(SPACE, 5, 155);
+	draw_box(SPACE, 5, 175);
+	write_text("r  Reset", 10, 160, WHITE, 0);
+	write_text("q  Quit", 10, 180, WHITE, 0);
 }
 
 void display_board(int level) {
