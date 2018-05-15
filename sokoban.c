@@ -155,7 +155,6 @@ int main() {
     int level_status[5];
     int game_status = ONGOING;
 
-	set_graphics(VGA_320X200X256);
     // this is to initialize all level status as ongoing
     int index = 0;
     for (index = 0; index < 5; index++) {
@@ -165,6 +164,8 @@ int main() {
     /* main game proper */
     while (game_status == ONGOING) {
         /* this is for the user menu */
+        set_graphics(VGA_320X200X256);
+        clrscr();
         show_main_menu();
         if (user_input > 4 || user_input < 1) user_input = (char) getch();
 
@@ -371,6 +372,9 @@ void call_page(){
 }
 
 void page1_how_to(){
+    set_graphics(VGA_320X200X256);
+    clrscr();
+    display_how(0);
     printf("Page 1\n");
     printf("[1] Back\n");
     printf("[2] Next\n");
@@ -384,6 +388,9 @@ void page1_how_to(){
 }
 
 void page2_how_to(){
+    set_graphics(VGA_320X200X256);
+    clrscr();
+    display_how(1);
     printf("Page 2\n");
     printf("[1] Back\n");
     printf("[2] Next\n");
@@ -398,6 +405,9 @@ void page2_how_to(){
 }
 
 void page3_how_to(){
+    set_graphics(VGA_320X200X256);
+    clrscr();
+    display_how(2);
     printf("Page 3\n");
     printf("[1] Back\n");
     printf("[2] Main Menu\n");
@@ -411,6 +421,9 @@ void page3_how_to(){
 }
 
 void call_about(){
+    set_graphics(VGA_320X200X256);
+    clrscr();
+    display_about();
     char input;
     do{
         printf("About\n");
