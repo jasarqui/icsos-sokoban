@@ -546,6 +546,10 @@ void display_game_stats() {
 	draw_box(SPACE, 43, 91);
 	draw_box(SPACE, 79, 91);
 	draw_box(SPACE, 61, 109);
+	write_text("w", 67, 78, WHITE, 0);
+	write_text("a", 49, 96, WHITE, 0);
+	write_text("s", 85, 96, WHITE, 0);
+	write_text("d", 67, 114, WHITE, 0);
 
 	// game
 	draw_box(SPACE, 5, 155);
