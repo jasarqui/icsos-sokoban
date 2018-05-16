@@ -55,6 +55,9 @@ void congratulate();				// this is to display end game screen
 void display_game_stats();			            // displays simple how, level and moves
 void display_board(int level);   	            // displays board given the level
 void reload_tile(int **board, int x, int y);    // reloads tiles per move
+void display_level(int);
+void display_moves(int);
+void clearboard();
 
 // -- misc pages
 // about
@@ -87,7 +90,7 @@ int is_valid_move(char direction, int **board, int row_player, int col_player); 
 void replace_blocks(int **board, int row_dest1, int col_dest1, int row_dest2, int col_dest2, int *row_player, int *col_player); // replace blocks 
 
 /* global variables */
-/* put global variables here */
+/*
 int levels[5][10][10] = {
     { // level 1
         {W, W, W, W, W, W, W, W, W, W},
@@ -141,9 +144,73 @@ int levels[5][10][10] = {
         {W, W, W, W, W, W, W, W, W, W},
         {W, O, S, S, S, S, S, O, W, W},
         {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
         {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, K, S, S, S, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    }
+};
+*/
+
+int levels[5][10][10] = {
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
         {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, O, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
+        {W, S, S, B, K, B, S, S, W, W},
+        {W, S, S, S, B, S, S, S, W, W},
         {W, S, S, S, S, S, S, S, W, W},
         {W, O, S, S, S, S, S, O, W, W},
         {W, W, W, W, W, W, W, W, W, W},
@@ -292,6 +359,7 @@ void replace_blocks(int **board, int row_dest1, int col_dest1, int row_dest2, in
     reload_tile(board, row_dest1, col_dest1);
     reload_tile(board, row_dest2, col_dest2);
     board[*row_player][*col_player] = (board[*row_player][*col_player] == K) ? S:O;
+    reload_tile(board, *row_player, *col_player);
     set_player_position(row_player, col_player, row_dest1, col_dest1);
  }   
 
@@ -345,6 +413,8 @@ void start_game(){
             char user_input = getch();
             switch(user_input){
                 case 'r':   reset_level(level_board, levels[level_number], &moveCount, &row_player, &col_player);
+                            clearboard();
+                            display_board(level_number);
                             break;
                 case 'q':   level_status = END;
                             game_status = END;
@@ -360,7 +430,7 @@ void start_game(){
             }
             if(is_completed(level_board)){
                 if(level_number == 4 ){
-                    // print_end_menu();
+                    congratulate();
                     char input = getch();
                     switch(input){
                         case '1': start_game(); break;
@@ -495,6 +565,8 @@ void show_main_menu() {
 }
 
 void congratulate() {
+    set_graphics(VGA_320X200X256);
+    clrscr();
 	write_text("CONGRATULATIONS!", 85, 60, WHITE, 1);
 
 	// controls
@@ -598,8 +670,8 @@ void display_game_stats() {
 	draw_box(SPACE, 61, 109);
 	write_text("w", 67, 78, WHITE, 0);
 	write_text("a", 49, 96, WHITE, 0);
-	write_text("s", 85, 96, WHITE, 0);
-	write_text("d", 67, 114, WHITE, 0);
+	write_text("d", 85, 96, WHITE, 0);
+	write_text("s", 67, 114, WHITE, 0);
 
 	// game
 	draw_box(SPACE, 5, 155);
@@ -626,15 +698,24 @@ void display_board(int level) {
 	}
 }
 
+void clearboard() {
+    int row = 0, col = 0;
+	for (row = 0; row < 10; row++) {
+		for (col = 0; col < 10; col++) {
+            draw_box(100, (130 + (row * 18)), (10 + (col * 18)));
+		}
+	}
+}
+
 void reload_tile(int** board, int x, int y) {
-    switch (board[y][x]) {
-        case SPACE: draw_box(SPACE, (130 + (x * 18)), (10 + (y * 18))); break;
-        case WALL: draw_box(WALL, (130 + (x * 18)), (10 + (y * 18))); break;
-        case KEEPER: draw_box(KEEPER, (130 + (x * 18)), (10 + (y * 18))); break;
-        case KEEPER_ON_STORAGE: draw_box(KEEPER_ON_STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
-        case BOX: draw_box(BOX, (130 + (x * 18)), (10 + (y * 18))); break;
-        case BOX_ON_STORAGE: draw_box(BOX_ON_STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
-        case STORAGE: draw_box(STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
+    switch (board[x][y]) {
+        case SPACE: draw_box(SPACE, (130 + (y * 18)), (10 + (x * 18))); break;
+        case WALL: draw_box(WALL, (130 + (y * 18)), (10 + (x * 18))); break;
+        case KEEPER: draw_box(KEEPER, (130 + (y * 18)), (10 + (x * 18))); break;
+        case KEEPER_ON_STORAGE: draw_box(KEEPER_ON_STORAGE, (130 + (y * 18)), (10 + (x * 18))); break;
+        case BOX: draw_box(BOX, (130 + (y * 18)), (10 + (x * 18))); break;
+        case BOX_ON_STORAGE: draw_box(BOX_ON_STORAGE, (130 + (y * 18)), (10 + (x * 18))); break;
+        case STORAGE: draw_box(STORAGE, (130 + (y * 18)), (10 + (x * 18))); break;
         default: {};
     }
 }
