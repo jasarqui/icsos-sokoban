@@ -50,8 +50,11 @@ void print_end_menu();				// this is to print the end game's menu
 void display_about();   			// this is to display the about page
 void display_how(int body);			// this is to display the how page
 void congratulate();				// this is to display end game screen
-void display_board(int level);   	// displays board given the level
-void display_game_stats();			// displays simple how, level and moves
+
+// game gui
+void display_game_stats();			            // displays simple how, level and moves
+void display_board(int level);   	            // displays board given the level
+void reload_tile(int **board, int x, int y);    // reloads tiles per move
 
 // -- misc pages
 // about
@@ -286,6 +289,8 @@ void replace_blocks(int **board, int row_dest1, int col_dest1, int row_dest2, in
         else if(board[row_dest2][col_dest2] == O) board[row_dest2][col_dest2] = D;
         board[row_dest1][col_dest1] = X;
     }
+    reload_tile(board, row_dest1, col_dest1);
+    reload_tile(board, row_dest2, col_dest2);
     board[*row_player][*col_player] = (board[*row_player][*col_player] == K) ? S:O;
     set_player_position(row_player, col_player, row_dest1, col_dest1);
  }   
@@ -476,11 +481,15 @@ void show_main_menu() {
 		draw_box(WALL, box_start, 64);
 	}
 
+	draw_box(SPACE, 39, 105);
+	draw_box(SPACE, 39, 125);
+	draw_box(SPACE, 39, 145);
+	draw_box(SPACE, 39, 165);
     write_text("SOKOBAN", 130, 40, WHITE, 1); 
-	write_text("[1] Start", 40, 110, WHITE, 0); 
-	write_text("[2] How to Play", 40, 130, WHITE, 0);
-	write_text("[3] About", 40, 150, WHITE, 0);
-	write_text("[4] Exit", 40, 170, WHITE, 0);
+	write_text("1  Start", 45, 110, WHITE, 0); 
+	write_text("2  How to Play", 45, 130, WHITE, 0);
+	write_text("3  About", 45, 150, WHITE, 0);
+	write_text("4  Exit", 45, 170, WHITE, 0);
 }
 
 void congratulate() {
@@ -590,4 +599,17 @@ void display_board(int level) {
 			}
 		}
 	}
+}
+
+void reload_tile(int** board, int x, int y) {
+    switch (board[y][x]) {
+        case SPACE: draw_box(SPACE, (130 + (x * 18)), (10 + (y * 18))); break;
+        case WALL: draw_box(WALL, (130 + (x * 18)), (10 + (y * 18))); break;
+        case KEEPER: draw_box(KEEPER, (130 + (x * 18)), (10 + (y * 18))); break;
+        case KEEPER_ON_STORAGE: draw_box(KEEPER_ON_STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
+        case BOX: draw_box(BOX, (130 + (x * 18)), (10 + (y * 18))); break;
+        case BOX_ON_STORAGE: draw_box(BOX_ON_STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
+        case STORAGE: draw_box(STORAGE, (130 + (x * 18)), (10 + (y * 18))); break;
+        default: {};
+    }
 }
