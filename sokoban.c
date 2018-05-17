@@ -90,7 +90,6 @@ int is_valid_move(char direction, int **board, int row_player, int col_player); 
 void replace_blocks(int **board, int row_dest1, int col_dest1, int row_dest2, int col_dest2, int *row_player, int *col_player); // replace blocks 
 
 /* global variables */
-/*
 int levels[5][10][10] = {
     { // level 1
         {W, W, W, W, W, W, W, W, W, W},
@@ -149,70 +148,6 @@ int levels[5][10][10] = {
         {W, S, S, S, B, S, S, S, W, W},
         {W, S, S, S, S, S, S, S, W, W},
         {W, O, S, S, S, S, S, O, W, W},
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, W, W, W, W, W, W, W, W, W}
-    }
-};
-*/
-
-int levels[5][10][10] = {
-    { // level 1
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, O, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, B, K, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, W, W, W, W, W, W, W, W, W}
-    },
-    { // level 2
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, O, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, B, K, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, W, W, W, W, W, W, W, W, W}
-    },
-    { // level 3
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, O, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, B, K, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, W, W, W, W, W, W, W, W, W}
-    },
-    { // level 4
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, O, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, B, K, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, W, W, W, W, W, W, W, W, W}
-    },
-    { // level 5
-        {W, W, W, W, W, W, W, W, W, W},
-        {W, O, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, B, K, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
-        {W, S, S, S, S, S, S, S, W, W},
         {W, W, W, W, W, W, W, W, W, W},
         {W, W, W, W, W, W, W, W, W, W}
     }
