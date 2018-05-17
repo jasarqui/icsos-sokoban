@@ -90,6 +90,7 @@ int is_valid_move(char direction, int **board, int row_player, int col_player); 
 void replace_blocks(int **board, int row_dest1, int col_dest1, int row_dest2, int col_dest2, int *row_player, int *col_player); // replace blocks 
 
 /* global variables */
+/*
 int levels[5][10][10] = {
     { // level 1
         {W, W, W, W, W, W, W, W, W, W},
@@ -152,6 +153,70 @@ int levels[5][10][10] = {
         {W, W, W, W, W, W, W, W, W, W}
     }
 };
+*/
+
+int levels[5][10][10] = {
+    { // level 1
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, B, K, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 2
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, B, K, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 3
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, B, K, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 4
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, B, K, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    },
+    { // level 5
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, O, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, B, K, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, S, S, S, S, S, S, S, W, W},
+        {W, W, W, W, W, W, W, W, W, W},
+        {W, W, W, W, W, W, W, W, W, W}
+    }
+};
 
 /* main function */
 int main() {
@@ -169,10 +234,12 @@ int main() {
     /* main game proper */
     while (game_status == ONGOING) {
         /* this is for the user menu */
-        set_graphics(VGA_320X200X256);
-        clrscr();
-        show_main_menu();
-        if (user_input > 4 || user_input < 1) user_input = (char) getch();
+        if (user_input == ' ' || user_input == '1' || user_input == '2' || user_input == '3' || user_input == '5') {
+            set_graphics(VGA_320X200X256);
+            clrscr();
+            show_main_menu();
+        }
+        user_input = (char) getch();
 
         /* switch user input */
         switch(user_input) {
@@ -335,6 +402,7 @@ void start_game(){
         // create a new board and copy the initial values of the board and set number of moves to 0
         int **level_board = create_board();
         copy_board(levels[level_number], level_board);
+        if (level_number != 0) clearboard();
     	display_board(level_number);
 		display_game_stats();
         get_player_position(&row_player, &col_player, level_board);
@@ -542,29 +610,51 @@ void display_how(int body) {
 		write_text("or vertically onto empty squares.", 11, 105, WHITE, 0);
 
 		// player controls
+        // -- box
 		draw_box(SPACE, 151, 139);
 		draw_box(SPACE, 133, 157);
 		draw_box(SPACE, 151, 157);
 		draw_box(SPACE, 169, 157);
+        // -- text
 		write_text("W", 157, 144, WHITE, 0);
 		write_text("A", 139, 162, WHITE, 0);
 		write_text("S", 157, 162, WHITE, 0);
 		write_text("D", 175, 162, WHITE, 0);
-		write_text("UP", 152, 126, WHITE, 0);
-		write_text("LEFT", 94, 162, WHITE, 0);
-		write_text("RIGHT", 193, 162, WHITE, 0);
-		write_text("DOWN", 145, 180, WHITE, 0);
+        write_text("Use these to control your player", 17, 180, WHITE, 0);
 	} else if (body == 1) {
 		write_text("The player can also move into a", 20, 75, WHITE, 0);
 		write_text("box, which pushes it to the square", 8, 90, WHITE, 0);
 		write_text("beyond. Boxes may not be pushed", 19, 105, WHITE, 0);
 		write_text("into other boxes or walls, and", 23, 120, WHITE, 0);
 		write_text("they cannot be pulled.", 60, 135, WHITE, 0);
+
+        // legend
+        // -- box
+        draw_box(KEEPER, 49, 160);
+        draw_box(SPACE, 117, 160);
+        draw_box(BOX, 185, 160);
+        draw_box(WALL, 253, 160);
+        // -- text
+        write_text("Keeper", 32, 180, WHITE, 0);
+        write_text("Floor", 105, 180, WHITE, 0); 
+        write_text("Box", 181, 180, WHITE, 0);
+        write_text("Wall", 245, 180, WHITE, 0);
 	} else if (body == 2) {
 		write_text("The number of boxes is equal to", 20, 75, WHITE, 0);
 		write_text("the number of storage locations.", 15, 90, WHITE, 0);
 		write_text("The puzzle is solved when all", 28, 105, WHITE, 0);
 		write_text("boxes are at storage locations.", 22, 120, WHITE, 0);
+
+        // legend
+        // -- box
+        draw_box(STORAGE, 80, 160);
+        draw_box(KEEPER_ON_STORAGE, 151, 160);
+        draw_box(BOX_ON_STORAGE, 219, 160);
+        // -- text
+        write_text("On Storage", 115, 145, WHITE, 0);
+        write_text("Floor", 70, 180, WHITE, 0);
+        write_text("Keeper", 134, 180, WHITE, 0); 
+        write_text("Box", 215, 180, WHITE, 0);
 	}	
 }
 
